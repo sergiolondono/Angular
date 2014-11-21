@@ -1,0 +1,11 @@
+
+	<div data-ng-controller="dataClientController">
+
+		<ul>
+			<li data-ng-repeat="client in data" class="list-group-item list-group-item-success">
+				{{ client.name | uppercase}} - {{ client.last_name | lowercase}}
+			</li>
+		</ul>
+
+		<button data-ng-click="getClientData()">Get Server Data</button>
+</div>

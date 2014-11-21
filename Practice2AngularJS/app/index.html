@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="App">
+<head>
+	<meta charset="UTF-8">
+	<title>index</title>
+	<link rel="stylesheet" href="Styles/bootstrap.min.css">
+</head>
+<body>
+	<br>
+	<ul class="nav nav-pills" role="tablist">
+	  <li class="active"><a href="#/">Home</a></li>
+	  <li><a href="#/view2">Vista 2</a></li>
+	  <li><a href="#/view3">Vista 3</a></li>
+	</ul>
+
+	<div data-ng-view></div>
+
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular-route.min.js"></script>
+
+	<script>
+		var appModule = angular.module('App', ['ngRoute']);
+
+		appModule.config(['$routeProvider', configurationApp]);
+
+		function configurationApp ($routeProvider) {
+				$routeProvider
+				.when('/', { contoller: 'SimpleController',	 templateUrl: '/vie	ws/View.html' })
+				.when('/view2', {contoller: 'SimpleController', templateUrl: '/views/View2.html' })
+				.otherwise({ redirectTo: '/' });
+			}
+
+			appModule.factory('SimpleFactory',  function(){
+				var customers = [
+					{ name:'Sheldon Cooper', city:'Nebraska' },
+				    { name:'Raj Koothrappali', city:'Ohio' },
+				    { name:'Leonard Hofstadter', city:'Illinois' }
+				];
+				var factory = {};
+				factory.getCustomers = function(){
+					return customers;
+				}
+				return factory;
+			})
+
+			appModule.controller('SimpleController', function($scope, SimpleFactory){
+					$scope.customers = [];
+
+					init();
+					function init(){
+						$scope.customers = SimpleFactory.getCustomers();
+					}
+
+					$scope.addCustomer = function(){
+					$scope.customers.push(
+					{
+						name: $scope.newCustomer.name, 
+						city: $scope.newCustomer.city
+					});
+				}
+
+				  $scope.deleteCustomer = function (id) {
+			        for (var i = $scope.customers.length - 1; i >= 0; i--) {
+			            if ($scope.customers[i].id === id) {
+			                $scope.customers.splice(i, 1);
+			                break;
+			            }
+			        }
+			    };
+					
+				})
+			
+			/*appModule.controller('SimpleController', function($scope)
+			{
+				$scope.customers = [
+					{ name:'Sheldon Cooper', city:'Nebraska' },
+				    { name:'Raj Koothrappali', city:'Ohio' },
+				    { name:'Leonard Hofstadter', city:'Illinois' }
+				];
+
+				$scope.addCustomer = function(){
+					$scope.customers.push(
+					{
+						name: $scope.newCustomer.name, 
+						city: $scope.newCustomer.city
+					});
+				}
+			})*/
+
+		/*var controllers = {};
+		controllers.SimpleController = function ($scope){
+			$scope.customers = [
+				{ name:'Sheldon Cooper', city:'Nebraska' },
+			    { name:'Raj Koothrappali', city:'Ohio' },
+			    { name:'Leonard Hofstadter', city:'Illinois' }
+			];
+
+			$scope.addCustomer = function(){
+				$scope.customers.push({
+					name: $scope.newCustomer.name,
+					city: $scope.newCustomer.city
+				});
+			};
+		}
+
+		appModule.controller(controllers);*/
+	</script>
+
+	<script type="text/javascript" src="Controllers/dataClientController.js"></script>
+
+</body>
+</html>

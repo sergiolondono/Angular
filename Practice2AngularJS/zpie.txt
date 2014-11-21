@@ -1,0 +1,50 @@
+<script>
+            'use strict';
+
+            angular.module('app', ['ngRoute', 'ngAnimate', 'ngCookies', 'ngIdle', 'kendo.directives'])
+                .config(['$routeProvider', '$locationProvider', '$httpProvider', '$idleProvider', '$keepaliveProvider',
+                    function ($routeProvider, $locationProvider, $httpProvider, $idleProvider, $keepaliveProvider) {
+
+                        jQuery.support.cors = true;
+
+                        //Push Factories
+                        $httpProvider.interceptors.push('auth-interceptor');
+
+                        $httpProvider.defaults.headers.common['Cache-Control'] = 'no-cache'
+
+                        //Configure TimeOut
+                        https://github.com/HackedByChinese/ng-idle
+                        $idleProvider.idleDuration(timeOut);
+                        $idleProvider.warningDuration(5);
+                        $keepaliveProvider.interval(2);
+
+                        $locationProvider.html5Mode(true);
+
+                        $routeProvider
+                                 .when('@Url.Content("~/")', { templateUrl: '@Url.Content("~/app/modules/main/home.html")' })
+                                 .when('@Url.Content("~/nuevos-ingresos")', { templateUrl: '@Url.Content("~/app/modules/ingresos/nuevos-ingresos.html")' })
+                                 .when('@Url.Content("~/aprobacion-nuevos-ingresos")', { templateUrl: '@Url.Content("~/app/modules/aprobaciones/aprobacion-nuevos-ingresos.html")' })
+                                 .when('@Url.Content("~/aprobacion-nuevos-ingresos/:zona")', { templateUrl: '@Url.Content("~/app/modules/aprobaciones/aprobacion-nuevos-ingresos-zona.html")' })
+                                 .otherwise({ redirectTo: '@Url.Content("~/")' });
+                    }])
+                    .run(['$rootScope', '$idle', function ($rootScope, $idle) {
+                        $rootScope.$on('$idleTimeout', function () {
+                            LogOut();
+                        });
+                        $idle.watch();
+                    }]);
+            
+            //.run(['$rootScope', '$templateCache', '$cacheFactory', function ($rootScope, $templateCache, $cacheFactory) {
+
+            //    $rootScope.$on('$viewContentLoaded', function () {
+            //        $templateCache.removeAll();
+            //        $cacheFactory.get('$http').removeAll();
+            //    });
+
+            //    $rootScope.$on('$routeChangeStart', function (event, next, current) {
+            //        $templateCache.removeAll();
+            //        $cacheFactory.get('$http').removeAll();
+            //    });
+            //}]);
+
+        </script>
